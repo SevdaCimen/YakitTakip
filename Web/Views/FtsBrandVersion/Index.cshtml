@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="chartdiv"></div>
+<div class="card">
+    <div class="card-header" data-background-color="orange">
+        <h4 class="title">Marka Versiyon Listesi</h4>
+    </div>
+    <div class="card-content table-responsive">
+        <table class="table" id="ftsBrandVersionTable"></table>
+    </div>
+</div>
+
+
+@section Css{
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+            font-size: 11px;
+        }
+    </style>
+}
+@section Scripts{
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+
+
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+    <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+
+    <script>
+        $(function () {
+            //html içindeki ftsVehicle table ı bu kısımda controllerdaki fonksiyonu baglanıyor
+            $('#ftsBrandVersionTable').DataTable({
+                columns: [
+                    //Select  BrandId, Brand.Name  ,Year, AvarageConsumption,HourlyConsumption,FuelTankCapacity,CreatedBy
+                    { title: 'Marka Id', data: 'BrandId' },
+                    { title: 'Marka Adı', data: 'Name' },
+                    { title: 'Yıl', data: 'Year' },
+                    { title: 'Ortalama Yakıt Tüketimi(100 km)', data: 'AvarageConsumption' },
+                    { title: 'Saatlik Yakıt Tüketimi', data: 'HourlyConsumption' },
+                    { title: 'Yakıt Tankı Kapasitesi', data: 'FuelTankCapacity' },
+                    { title: 'Sahip Firma', data: 'CreatedBy' },
+
+
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsBrandVersion/MarkaVersiyonListesi'
+                }
+            })
+
+            $.getJSON('/FtsBrandVersion/VersiyonTuketim', function (data) {
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "theme": "none",
+                    "type": "serial",
+                    "dataProvider": [{
+                        "country":data[0].Name,
+                        "year2004": data[0].HourlyConsumption,
+                        "year2005": data[0].AvarageConsumption
+                    }, {
+                            "country": data[1].Name,
+                            "year2004": data[1].HourlyConsumption,
+                        "year2005": 3.1
+                    }, {
+                            "country": data[2].Name,
+                            "year2004": data[2].HourlyConsumption,
+                            "year2005": data[2].AvarageConsumption
+                    }, {
+                            "country": data[3].Name,
+                            "year2004": data[3].HourlyConsumption,
+                            "year2005": data[3].AvarageConsumption
+                    }, {
+                            "country": data[4].Name,
+                            "year2004": data[4].HourlyConsumption,
+                            "year2005": data[4].AvarageConsumption
+                    }, {
+                            "country": data[5].Name,
+                            "year2004": data[5].HourlyConsumption,
+                            "year2005": data[5].AvarageConsumption
+                    }],
+                    "valueAxes": [{
+                        "unit": "litre",
+                        "position": "left",
+                        "title": "Marka Bazlı Yakıt Tüketimler",
+                    }],
+                    "startDuration": 1,
+                    "graphs": [{
+                        "balloonText": " [[category]] (Saatlik Tüketim): <b>[[value]] litre</b>",
+                        "fillAlphas": 3,
+                        "lineAlpha": 0,
+                        "title": "Saatlik Tüketim",
+                        "type": "column",
+                        "valueField": "year2004"
+                    }, {
+                            "balloonText": "[[category]] (100km'de Ortalama Tüketim): <b>[[value]] litre</b>",
+                        "fillAlphas":10,
+                        "lineAlpha": 1,
+                        "title": "100km'de Ortalama Tüketim",
+                        "type": "column",
+                        "clustered": false,
+                        "columnWidth": 0.5,
+                        "valueField": "year2005"
+                    }],
+                    "plotAreaFillAlphas": 0.1,
+                    "categoryField": "country",
+                    "categoryAxis": {
+                        "gridPosition": "start"
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+
+                });
+
+
+
+            })
+
+
+        })
+
+
+
+    </script>
+
+
+}

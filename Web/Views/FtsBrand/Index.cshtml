@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- HTML -->
+
+<div class="tim-typo" style="top: -50px;    left: 61px; ">
+    <h3>
+        <span class="tim-note"></span>Araçların Marka Dagılımları
+    </h3>
+</div>
+<div id="chartdiv"></div>
+<div class="tim-typo">
+    <span class="tim-note">Ayrıntılı İnceleme</span>
+    <p class="text-warning">
+      Model dagılımını oranlar yerine net sayıları ile görmek için aşagıdaki listeyi inceleyebilirsiniz.
+    </p>
+</div>
+<div class="col-lg-6 col-md-12" style="    width: 900px;    left: 65px;">
+    <div class="card">
+        <div class="card-header" data-background-color="orange">
+            <h4 class="title">Marka İsimleri ve Toplam Sayıları</h4>
+            <p class="category">Her bir markaya ait toplam araç sayısı görüntülenmektedir.</p>
+        </div>
+        <div class="card-content table-responsive">
+            <table class="table table-hover" id="ftsbrandtable"></table>
+        </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+
+@section CSS{
+
+    <!-- Styles -->
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+}
+
+
+
+<!-- Chart code -->
+@section Scripts{
+    <!-- Resources -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/pie.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+    <script>
+        $(function () {
+            $.getJSON('FtsBrand/ModelTipleri', function (data) {
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "type": "pie",
+                    "theme": "light",
+                    "dataProvider": [{
+                        "MarkaAdı": data.data[0].Name,
+                        "MarkaSayısı": data.data[0].BrandCount
+                    }, {
+                        "MarkaAdı": data.data[1].Name,
+                        "MarkaSayısı": data.data[1].BrandCount
+                    }, {
+                        "MarkaAdı": data.data[2].Name,
+                        "MarkaSayısı": data.data[2].BrandCount
+                    }, {
+                        "MarkaAdı": data.data[3].Name,
+                        "MarkaSayısı": data.data[3].BrandCount
+                    }, {
+                        "MarkaAdı": data.data[4].Name,
+                        "MarkaSayısı": data.data[4].BrandCount
+                    }, {
+                        "MarkaAdı": data.data[5].Name,
+                        "MarkaSayısı": data.data[5].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[6].Name,
+                        "MarkaSayısı": data.data[6].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[7].Name,
+                        "MarkaSayısı": data.data[7].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[8].Name,
+                        "MarkaSayısı": data.data[8].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[9].Name,
+                        "MarkaSayısı": data.data[9].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[10].Name,
+                        "MarkaSayısı": data.data[10].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[11].Name,
+                        "MarkaSayısı": data.data[11].BrandCount
+                    },
+                    {
+                        "MarkaAdı": data.data[12].Name,
+                        "MarkaSayısı": data.data[12].BrandCount
+                    },
+
+                    ],
+                    "valueField": "MarkaSayısı",
+                    "titleField": "MarkaAdı",
+                    "outlineAlpha": 0.4,
+                    "depth3D": 15,
+                    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                    "angle": 30,
+                    "export": {
+                        "enabled": true
+                    }
+                });
+            })
+
+            $('#ftsbrandtable').DataTable({
+                columns: [
+                    { title: 'Marka Adı', data: 'Name' },
+                    { title: 'Toplam Adedi', data: 'BrandCount' },
+
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsBrand/MarkaAdet'
+                }
+            })
+
+
+
+        })
+    </script>
+
+}
+

@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success">
+            <button type="button" aria-hidden="true" class="close">×</button>
+            <span>
+                <b> Görev- </b> Her görevden kaç adet bulunduğu aşağxıda şematize edilmektedir.
+            </span>
+        </div>
+        <!-- HTML -->
+        <div id="chartdiv"></div>
+
+        <div class="card">
+            <div class="card-header" data-background-color="green">
+                <h4 class="title">Görev Listesi</h4>
+            </div>
+            <div class="card-content table-responsive">
+                <table class="table" id="ftsTasksTable"></table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Css{
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+}
+@section Scripts{
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+
+
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+    <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+
+    <script>
+        $(function () {
+            //html içindeki ftsVehicle table ı bu kısımda controllerdaki fonksiyonu baglanıyor
+            $('#ftsTasksTable').DataTable({
+                columns: [
+                    { title: 'AracId', data: 'vehicleId' },
+                    { title: 'PersonelId', data: 'personId' },
+                    { title: 'GörevTanımı', data: 'taskDefinition' },
+                    { title: 'GörevSüresi', data: 'taskDate' },
+                    { title: 'Id', data: 'id' },
+          
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsTasks/TumGorevleriGetir'
+                }
+            })
+            $.getJSON('/FtsTasks/GorevTipleri', function (data) {
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "type": "serial",
+                    "theme": "light",
+                    "marginRight": 70,
+                    "dataProvider": [{
+                        "TaskCount":data.data[0].TaskCount,
+                        "TaskDefinition": data.data[0].TaskDefinition,
+                        "color": "#FF0F00"
+                    }, {
+                            "TaskCount": data.data[1].TaskCount,
+                            "TaskDefinition": data.data[1].TaskDefinition,
+                        "color": "#FF6600"
+                        }, {
+                            "TaskCount": data.data[2].TaskCount,
+                            "TaskDefinition": data.data[2].TaskDefinition,
+                        "color": "#FF9E01"
+                    }, {
+                            "TaskCount": data.data[3].TaskCount,
+                            "TaskDefinition": data.data[3].TaskDefinition,
+                        "color": "#FCD202"
+                    }, {
+                            "TaskCount": data.data[4].TaskCount,
+                            "TaskDefinition": data.data[4].TaskDefinition,
+                        "color": "#F8FF01"
+                    }, {
+                            "TaskCount": data.data[5].TaskCount,
+                            "TaskDefinition": data.data[5].TaskDefinition,
+                        "color": "#B0DE09"
+                    }, {
+                            "TaskCount": data.data[6].TaskCount,
+                            "TaskDefinition": data.data[6].TaskDefinition,
+                        "color": "#04D215"
+                    }, {
+                            "TaskCount": data.data[7].TaskCount,
+                            "TaskDefinition": data.data[7].TaskDefinition,
+                        "color": "#0D8ECF"
+                    }, {
+                            "TaskCount": data.data[8].TaskCount,
+                            "TaskDefinition": data.data[8].TaskDefinition,
+                        "color": "#0D52D1"
+                    }],
+                    "valueAxes": [{
+                        "axisAlpha": 0,
+                        "position": "left",
+                        "title": "Görev Sayısı"
+                    }],
+                    "startDuration": 1,
+                    "graphs": [{
+                        "balloonText": "<b>[[category]]: [[value]]</b>",
+                        "fillColorsField": "color",
+                        "fillAlphas": 0.9,
+                        "lineAlpha": 0.2,
+                        "type": "column",
+                        "valueField": "TaskCount"
+                    }],
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "TaskDefinition",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "labelRotation": 45
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+
+                });
+
+            })
+        })
+
+    </script>
+
+
+}
+
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}
+
+.amcharts-export-menu-top-right {
+  top: 10px;
+  right: 0;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+

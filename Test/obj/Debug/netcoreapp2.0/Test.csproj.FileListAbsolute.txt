@@ -1,0 +1,15 @@
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Test.deps.json
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Test.runtimeconfig.json
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Test.runtimeconfig.dev.json
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Test.dll
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Test.pdb
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Service.dll
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Service.pdb
+C:\Users\Hp\source\repos\YakitTakip\Test\bin\Debug\netcoreapp2.0\Core.pdb
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.csprojResolveAssemblyReference.cache
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.csproj.CoreCompileInputs.cache
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.AssemblyInfoInputs.cache
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.AssemblyInfo.cs
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.dll
+C:\Users\Hp\source\repos\YakitTakip\Test\obj\Debug\netcoreapp2.0\Test.pdb

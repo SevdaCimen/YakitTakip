@@ -1,0 +1,15 @@
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Web.deps.json
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Web.runtimeconfig.json
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Web.runtimeconfig.dev.json
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Web.dll
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Web.pdb
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.csprojResolveAssemblyReference.cache
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.csproj.CoreCompileInputs.cache
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.AssemblyInfoInputs.cache
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.AssemblyInfo.cs
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.dll
+C:\Users\Hp\source\repos\YakitTakip\Web\obj\Debug\netcoreapp2.0\Web.pdb
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Core.dll
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Service.dll
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Service.pdb
+C:\Users\Hp\source\repos\YakitTakip\Web\bin\Debug\netcoreapp2.0\Core.pdb

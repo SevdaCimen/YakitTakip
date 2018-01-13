@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+
+
+
+        <div class="card">
+            <div class="card-header" data-background-color="blue">
+                <h4 class="title">Araçlar</h4>
+                <h4 class="category">En Çok Mesafe Kat Eden 10 Araç</h4>
+            </div>
+            <div class="card-content">
+                <div id="chartdiv" style="width: 100%;height: 500px;"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" data-background-color="blue">
+                <h4 class="title">Araç Listesi</h4>
+            </div>
+
+            <div class="card-content table-responsive">
+                <table class="table" id="ftsVehicleTable"></table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <img src="~/images/car.png" style="height:70px" /> <h4 class="modal-title">Araç Bilgisi</h4>
+            </div>
+            <div class="modal-body" >
+               
+                <p style="color:deepskyblue">İlgili Aracın Toplam Mesafe ve Toplam Yakıt Bilgisi Görüntülenmektedir..</p>
+                <div id="vehicleData">
+                   
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Css{
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+
+}
+@section Scripts{
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+
+
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+
+
+
+    <script>
+        $(function () {
+            //html içindeki ftsVehicle table ı bu kısımda controllerdaki fonksiyonu baglanıyor
+            var table = $('#ftsVehicleTable').DataTable({
+                columns: [
+                    { title: 'No', data: 'id' },
+                    { title: 'Plaka', data: 'licensePlate' },
+                    { title: 'Araç Detay', data: 'ownershipType' },
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsVehicle/TumAraclariGetir'
+                },//diger colon
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": '<button class="btn btn-info">Geçmişi Göster!</button>'
+                }]
+            })
+            //kolon için stored procedur çagırılıyor
+            $('#ftsVehicleTable tbody').on('click', 'button', function () {
+                var data = table.row($(this).parents('tr')).data();
+                $.post('/FtsVehicle/AracGecmisi', { Id: data.id }, function (data)  {
+                    console.log(data)
+                    $('#vehicleData').append(JSON.stringify(data)
+                        
+                    )
+                    $('#myModal').modal('show')
+                })
+            });
+
+            //grafik
+
+            $.getJSON('/FtsVehicle/AraclaraGoreMesafeler', function (data) {
+
+                var chart = AmCharts.makeChart("chartdiv", {
+                    "theme": "light",
+                    "type": "serial",
+                    "startDuration": 2,
+                    "dataProvider": data,
+                    "valueAxes": [{
+                        "position": "left",
+                        "title": "Toplam Kilometre"
+                    }],
+                    "graphs": [{
+                        "balloonText": "[[category]]: <b>[[value]]</b>",
+                        "fillColorsField": "color",
+                        "fillAlphas": 1,
+                        "lineAlpha": 0.1,
+                        "type": "column",
+                        "valueField": "KiloMetre"
+                    }],
+                    "depth3D": 20,
+                    "angle": 30,
+                    "chartCursor": {
+                        "categoryBalloonEnabled": false,
+                        "cursorAlpha": 0,
+                        "zoomable": false
+                    },
+                    "categoryField": "Day",
+                    "categoryAxis": {
+                        "gridPosition": "start",
+                        "labelRotation": 60
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+
+                });
+
+            })
+        })
+
+    </script>
+
+
+}

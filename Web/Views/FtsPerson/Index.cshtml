@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-header" data-background-color="red">
+                <h4 class="title">En Çok Görev Alan 10 personel</h4>
+            </div>
+            <div id="chartdiv"></div>
+        </div>
+            <div class="card">
+                <div class="card-header" data-background-color="green">
+                    <h4 class="title">Personeller ,Görevleri ve Görev Kasamında Kullandıkları Araç Listesi</h4>
+                </div>
+
+                <div class="card-content table-responsive ">
+                    <table class="table" id="ftsPersonAndTaskTable"></table>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 class="title">Personel Listesi</h4>
+                </div>
+                <div class="card-content table-responsive">
+                    <table class="table" id="ftsPersonTable"></table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+@section Css{
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.material.min.css" rel="stylesheet" />
+    <style>
+       
+
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+}
+@section Scripts{
+
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+
+
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
+    <script src="http://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.material.min.js"></script>
+
+    <script>
+        $(function () {
+            //html içindeki ftsVehicle table ı bu kısımda controllerdaki fonksiyonu baglanıyor
+            $('#ftsPersonTable').DataTable({
+                columns: [
+                    { title: 'No', data: 'personId' },
+                    { title: 'Tc', data: 'tc' },
+                    { title: 'Ad', data: 'ad' },
+                    { title: 'Soyad', data: 'soyad' },
+                    { title: 'İşe Başlangıç Tarihi', data: 'baslangicTarihi' },
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsPerson/TumPersonelleriGetir'
+                }
+            })
+            $('#ftsPersonAndTaskTable').DataTable({
+                columns: [
+                    { title: 'Personel Ad', data: 'Ad' },
+                    { title: 'Personel SoyAd', data: 'Soyad' },
+                    { title: 'Kullanılan Araç Id', data: 'VehicleId' },
+                    { title: 'Görev Tanımı', data: 'TaskDefinition' },
+                    { title: 'Görev Tarihi', data: 'TaskDate' },
+
+                ],
+                ajax: {
+                    //ajax servere istek gondermemizi saglayan metod
+                    //url olarak controller ın ismi ve içerisindeki fonksiyon veriliyor
+                    url: '/FtsPerson/PersonellerveGorevler'
+                }
+            })
+            $.getJSON('FtsPerson/GorevliOnPersonel', function (data) { 
+
+                var chart = AmCharts.makeChart("chartdiv",
+                    {
+                        "type": "serial",
+                        "theme": "light",
+                        "dataProvider": [{
+                            "name": data.data[0].Ad,
+                            "points": data.data[0].TaskCount,
+                            "color": "#7F8DA9",
+                            "bullet": "https://www.amcharts.com/lib/images/faces/A04.png"
+                        }, {
+                                "name": data.data[9].Ad,
+                                "points": data.data[9].TaskCount,
+                            "color": "#FEC514",
+                            "bullet": "https://www.amcharts.com/lib/images/faces/C02.png"
+                            },
+                        {
+                            "name": data.data[4].Ad,
+                            "points": data.data[4].TaskCount,
+                            "color": "#e0fcb8",
+                            "bullet": "http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Male-Face-K2-icon.png"
+                        }
+                            ,     {
+                                "name": data.data[7].Ad,
+                                "points": data.data[7].TaskCount,
+                            "color": "#DB4C3C",
+                            "bullet": "http://www.iconarchive.com/download/i47408/hopstarter/face-avatars/Female-Face-FB-3.ico"
+                        },
+                            {
+                            "name": data.data[3].Ad,
+                            "points": data.data[3].TaskCount,
+                            "color": "#2a584a",
+                            "bullet": "https://www.amcharts.com/lib/images/faces/FD03.png"
+                        },
+                        {
+                                "name": data.data[8].Ad,
+                                "points": data.data[8].TaskCount,
+                            "color": "#DAF0FD",
+                            "bullet": "http://www.iconarchive.com/download/i47514/hopstarter/face-avatars/Male-Face-O4.ico"
+                        }
+                            ,{
+                                "name": data.data[5].Ad,
+                                "points": data.data[5].TaskCount,
+                                "color": "ea7276",
+                                "bullet": "http://prosportphysiotherapy.co.uk/wp-content/uploads/2014/09/Male-Face-F5.png"
+                            }
+                            , {
+                                "name": data.data[6].Ad,
+                                "points": data.data[6].TaskCount,
+                                "color": "#fba165",
+                                "bullet": "http://icons.iconarchive.com/icons/hopstarter/face-avatars/256/Female-Face-FA-3-icon.png"
+                            }
+                            , {
+                                "name": data.data[1].Ad,
+                                "points": data.data[1].TaskCount,
+                                "color": "#ffbda7",
+                                "bullet": "http://www.iconarchive.com/download/i47491/hopstarter/face-avatars/Male-Face-K1.ico"
+                            }
+                           
+                            , {
+                                "name": data.data[2].Ad,
+                                "points": data.data[2].TaskCount,
+                                "color": "#582737",
+                                "bullet": "https://www.amcharts.com/lib/images/faces/FE05.png"
+                            }
+                           
+                            
+                        ],
+                        "valueAxes": [{
+                            "maximum": 8,
+                            "minimum": 0,
+                            "axisAlpha": 0,
+                            "dashLength": 4,
+                            "position": "left"
+                        }],
+                        "startDuration": 1,
+                        "graphs": [{
+                            "balloonText": "<span style='font-size:13px;'>[[category]]: <b>[[value]]</b></span>",
+                            "bulletOffset": 10,
+                            "bulletSize": 52,
+                            "colorField": "color",
+                            "cornerRadiusTop": 8,
+                            "customBulletField": "bullet",
+                            "fillAlphas": 0.8,
+                            "lineAlpha": 0,
+                            "type": "column",
+                            "valueField": "points"
+                        }],
+                        "marginTop": 0,
+                        "marginRight": 0,
+                        "marginLeft": 0,
+                        "marginBottom": 0,
+                        "autoMargins": false,
+                        "categoryField": "name",
+                        "categoryAxis": {
+                            "axisAlpha": 0,
+                            "gridAlpha": 0,
+                            "inside": true,
+                            "tickLength": 0
+                        },
+                        "export": {
+                            "enabled": true
+                        }
+                    });
+
+
+
+
+            })
+
+        })
+
+
+
+    </script>
+    
+
+
+}
